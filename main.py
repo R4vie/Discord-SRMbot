@@ -35,10 +35,12 @@ async def on_message(message):
 
   msg = message.content
   
-  if msg.startswith('$inspire'): 
+  if msg.startswith("Zainspiruj mnie"): 
     quote = get_quote()
     await message.channel.send(quote)
-
+  elif msg.startswith("Dzięki sramon"):
+    await message.channel.send(":thumbsup:")
+  
   if any(word in msg for word in shitty_words):
     await message.channel.send(shitty_image)
 
