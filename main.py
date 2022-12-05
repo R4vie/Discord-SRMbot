@@ -2,6 +2,9 @@ import os
 import discord
 import requests
 import json
+import slots
+from replit import db
+from keep_alive import keep_alive
 
 my_secret = os.environ['token-sramon-2']
 
@@ -13,7 +16,7 @@ client = discord.Client(intents=intent)#intents=discord.Intents.default())
 
 shitty_words = [
                 "guwno", "gówno", "gowno", "gówniany", "gówniana",
-                "gowniany", "gowniana", "zasrany", "zasrana",                      "obsrana", "zasrani"
+                "gowniany", "gowniana", "zasrany", "zasrana", "obsrana", "zasrani"
                ]
 shitty_image = "https://cdn.7tv.app/emote/637be9fba61dcabc5095a32e/4x.webp"
 
@@ -32,22 +35,39 @@ async def on_ready():
 async def on_message(message):
   if message.author == client.user:
     return
-
   msg = message.content
-  
-  if msg.startswith("Zainspiruj mnie"): 
+  msg_author = str(message.author)
+  if msg.startswith("Inspiruj"): 
     quote = get_quote()
-    await message.channel.send(quote)
-  elif msg.startswith("Dzięki sramon"):
-    await message.channel.send(":thumbsup:")
+    await message.channel.send(quote + "\n" + str(message.author))
+  elif msg.startswith("1"):
+    await message.add_reaction("<:sramon:1049037728517472276>")
+  elif msg.startswith("!slots"):  #START SLOTS MACHINE IF !slots 
+   # msg_author = str(message.author) 
+    slots.slots_machine.clear()
+    
+    await message.channel.send(slots.slots() + "\n" + slots.points())
+    
+    if msg_author not in db.keys():
+      msg_author = 0
+    elif msg_author in db.keys():
+      result = slots.get_result()
+      point = int(db[msg_author])
+      points = point + int(result)
+      db[msg_author] = points
+      await message.channel.send("Twoje Punkty: " + str(points)) 
+      
   
-  if any(word in msg for word in shitty_words):
-    await message.channel.send(shitty_image)
+    
+  elif msg.startswith("!slotsRanks"):
+    return None
 
     
-   # await message.channel.send('hello')  #https://cdn.7tv.app/emote/637be9fba61dcabc5095a32e/4x.webp')
-
+  if any(word in msg for word in shitty_words):  
+    await message.add_reaction("<:sramon:1049037728517472276>")  #ADD REACTION EMOTE TO A MESSAGE
+  
 try:
+  keep_alive()
   client.run(my_secret)
 except discord.errors.HTTPException:  #DISCORD CONNECTION ERROR --- RATE LIMITS ---
   print("\n\n\nBLOCKED BY RATE LIMITS\nRESTARTING NOW\n\n\n")
