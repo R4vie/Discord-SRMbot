@@ -33,12 +33,12 @@ def check_slots(a, b, c):
 
 def get_result():
   return check_slots(str(slots_machine[0]),str(slots_machine[1]),str(slots_machine[2]))
+  
 def points():
-  #result = check_slots(str(slots_machine[0]),str(slots_machine[1]),str(slots_machine[2]))
   if get_result() == 0:#result == 0:
-    return("You win 0 points" + "\nPrzegrałeś miernoto  <:qqweqe:804796225773109278>")
+    return("Wygrałeś - 0$" + "\nPrzegrałeś miernoto  <:qqweqe:804796225773109278>")
   elif get_result() == 50:#result == 50:
-    return("You win 50 points" + "\nNawet mała wygrana to wciąż wygrana <:blush:917438459763884052>")
-  elif get_result() == 100:#result == 100:
-    return("You win 100 points" + "\nO kurwa wygrałeś  <:pogU:917438459407384576>")
+    return("Wygrałeś - 50$" + "\nNawet mała wygrana to wciąż wygrana <:blush:917438459763884052>")
+  elif get_result() == 200:#result == 100:
+    return("Wygrałeś - 200$" + "\nO kurwa wygrałeś  <:pogU:917438459407384576>")
     
