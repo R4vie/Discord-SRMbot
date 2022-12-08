@@ -37,8 +37,8 @@ async def on_ready():
   
 async def schedule_daily_message():#Every day at specific hour run script
   now = datetime.datetime.now()
-  #then = now+datetime.timedelta(days=1)
-  then = now.replace(hour=14, minute=30)#Set time !!!UTC time!!!
+  then = now+datetime.timedelta(days=1)
+  then.replace(hour=14, minute=30)#Set time !!!UTC time!!!
   wait_time = (then-now).total_seconds()
   
   await asyncio.sleep(wait_time)
